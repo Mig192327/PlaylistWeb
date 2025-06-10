@@ -14,6 +14,6 @@ Route::get('/dashboard', function () {
 Route::get('/playlist', [MusicController::class, 'index'])->name('playlist.index');
 Route::get('/playlist/create', [MusicController::class, 'create'])->name('playlist.create');
 Route::post('/playlist', [MusicController::class, 'store'])->name('playlist.store');
-Route::get('/playlist/{id}/edit', [MusicController::class, 'edit'])->name('playlist.edit');
+Route::get('playlist/{id}/edit', [MusicController::class, 'edit'])->name('playlist.editar');
 Route::put('/playlist/{id}', [MusicController::class, 'update'])->name('playlist.update');
 Route::delete('/playlist/{id}', [MusicController::class, 'destroy'])->name('playlist.destroy');

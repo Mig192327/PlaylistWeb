@@ -1,327 +1,113 @@
-<x-app-layout>
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Playlist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
-        * {
-            box-sizing: border-box;
+     
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
         }
-
-        body {
-            margin: 0;
-            background-color: #121212;
-            font-family: 'Montserrat', sans-serif;
-            color: #fff;
-            user-select: none;
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
         }
-
-        nav.sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 220px;
-            height: 100vh;
-            background-color: #040404;
-            padding: 30px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-            box-shadow: 2px 0 8px rgba(0,0,0,0.7);
-            z-index: 105;
+      
+        tbody tr:hover {
+            background-color: #eef2ff;
         }
-
-        nav.sidebar .logo {
-            font-size: 1.8rem;
-            font-weight: 900;
-            letter-spacing: 2px;
-            color: #1db954;
-            user-select: text;
-        }
-
-        nav.sidebar a {
-            color: #b3b3b3;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            padding: 8px 12px;
-            border-radius: 8px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        nav.sidebar a:hover,
-        nav.sidebar a.active {
-            background-color: #1db954;
-            color: #fff;
-        }
-
-        main.content {
-            margin-left: 220px;
-            padding: 30px 40px 60px;
-            min-height: 100vh;
-            background: linear-gradient(180deg, #121212 0%, #181818 100%);
-        }
-
-        header.page-header {
-            position: sticky;
-            top: 0;
-            background-color: #121212;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 1px solid #282828;
-            z-index: 103;
-            user-select: none;
-        }
-
-        header.page-header h1 {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: #1db954;
-            margin: 0;
-            letter-spacing: 2px;
-        }
-
-        header.page-header a.btn-add {
-            background-color: #1db954;
-            padding: 14px 26px;
-            font-weight: 700;
-            border-radius: 50px;
-            color: #121212;
-            text-decoration: none;
-            box-shadow: 0 8px 20px rgb(29 185 84 / 0.5);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-header.page-header a.btn-add:hover {
-    background-color: #17a44d;
-    box-shadow: 0 10px 28px rgb(23 164 77 / 0.7);
-    text-shadow: 0 0 6px rgba(255, 255, 255, 0.4); /* brilho branco sutil */
-}
-
-
-        header.page-header a.btn-add svg {
+       
+        .action-icon {
             width: 20px;
             height: 20px;
-            fill: #121212;
-        }
-
-        .playlist-grid {
-            margin-top: 30px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 100px;
-        }
-
-        .music-card {
-            width: 400px;
-            background-color: #181818;
-            border-radius: 12px;
-            padding: 20px 22px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 4px 15px rgb(0 0 0 / 0.7);
-            transition: background-color 0.3s ease, transform 0.25s ease;
-        }
-
-        .music-card:hover {
-            background-color: #282828;
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgb(29 185 84 / 0.7);
-        }
-
-        .music-info {
-            flex-grow: 1;
-            margin-bottom: 18px;
-        }
-
-        .music-title {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: #1db954;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .music-artist {
-            font-size: 1rem;
-            color: #b3b3b3;
-            margin-top: 6px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .music-actions {
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-
-        .music-actions form {
-            display: inline;
-            margin: 0;
-        }
-
-        .btn-listen, .btn-edit, .btn-delete {
-            border-radius: 50px;
-            padding: 10px 14px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            user-select: none;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            color: #121212;
-            white-space: nowrap;
-        }
-
-        .btn-listen {
-            background-color: #1db954;
-            box-shadow: 0 4px 12px rgb(29 185 84 / 0.8);
-        }
-
-        .btn-listen:hover {
-            background-color: #17a44d;
-            box-shadow: 0 6px 20px rgb(23 164 77 / 1);
-        }
-
-        .btn-edit {
-            background-color: #535353;
-            color: #fff;
-            box-shadow: 0 4px 12px rgb(0 0 0 / 0.5);
-        }
-
-        .btn-edit:hover {
-            background-color: #777;
-        }
-
-        .btn-delete {
-            background-color: #e03e3e;
-            box-shadow: 0 4px 12px rgb(224 62 62 / 0.8);
-        }
-
-        .btn-delete:hover {
-            background-color: #b53030;
-            box-shadow: 0 6px 20px rgb(181 48 48 / 1);
-        }
-
-        .btn-listen svg, .btn-edit svg, .btn-delete svg {
-            width: 18px;
-            height: 18px;
-            fill: currentColor;
-        }
-
-        @media (max-width: 768px) {
-            nav.sidebar {
-                width: 70px;
-                padding: 30px 10px;
-            }
-
-            nav.sidebar .logo,
-            nav.sidebar a {
-                display: none;
-            }
-
-            main.content {
-                margin-left: 70px;
-                padding: 20px 15px 40px;
-            }
-
-            header.page-header h1 {
-                font-size: 2rem;
-            }
-
-            .playlist-grid {
-                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-                gap: 18px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            main.content {
-                margin-left: 0;
-                padding: 15px 15px 30px;
-            }
-
-            header.page-header {
-                flex-direction: column;
-                gap: 14px;
-                align-items: flex-start;
-            }
-
-            header.page-header a.btn-add {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .playlist-grid {
-                grid-template-columns: 1fr;
-            }
+            vertical-align: middle;
+            margin-right: 4px;
+            stroke-width: 2.2;
         }
     </style>
+</head>
+<body class="bg-gradient-to-tr from-purple-700 via-indigo-800 to-blue-900 min-h-screen flex flex-col items-center py-10 px-4">
 
-    <nav class="sidebar">
-        <div class="logo">PLAYLIST</div>
-        <a href="{{ route('playlist.index') }}" class="active">Home</a>
-        <a href="{{ route('playlist.create') }}">Adicionar Música</a>
-    </nav>
+    <div class="w-full max-w-6xl bg-white bg-opacity-90 backdrop-blur-md rounded-3xl shadow-2xl p-8">
+        <h1 class="text-4xl font-extrabold mb-8 text-indigo-700 text-center select-none tracking-wide drop-shadow-lg">
+            🎶 Minha Playlist
+        </h1>
 
-    <main class="content">
-        <header class="page-header">
-            <h1>Minha Playlist</h1>
-            <a href="{{ route('playlist.create') }}" class="btn-add">
-                <svg viewBox="0 0 24 24">
-                    <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-                </svg>
-                Adicionar Música
-            </a>
-        </header>
+        @if(session('success'))
+            <div class="bg-green-100 text-green-700 p-4 mb-6 rounded-lg shadow-md border border-green-300 fade-in">
+                {{ session('success') }}
+            </div>
+        @endif
 
-        <section class="playlist-grid">
-            @foreach($musics as $music)
-                <article class="music-card">
-                    <div class="music-info">
-                        <div class="music-title">{{ $music->title }}</div>
-                        <div class="music-artist">{{ $music->artist }}</div>
-                    </div>
+        @if($errors->any())
+            <div class="bg-red-100 text-red-700 p-4 mb-6 rounded-lg shadow-md border border-red-300 fade-in">
+                <ul class="list-disc list-inside space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-                    <div class="music-actions">
-                        @if ($music->url)
-                            <a href="{{ $music->url }}" target="_blank" class="btn-listen">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M8 5v14l11-7z"/>
-                                </svg>
-                                Ouvir
-                            </a>
-                        @endif
+        <a href="{{ route('playlist.create') }}" 
+           class="inline-flex items-center mb-6 px-5 py-3 bg-indigo-600 text-white rounded-xl font-semibold shadow-lg hover:bg-indigo-700 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 stroke-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            Adicionar Música
+        </a>
 
-                        <a href="{{ route('playlist.edit', $music) }}" class="btn-edit">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M3 17.25V21h3.75l11.06-11.06-3.75-3.75L3 17.25zM21.41 6.34a1.25 1.25 0 0 0 0-1.77l-2-2a1.25 1.25 0 0 0-1.77 0l-1.83 1.83 3.75 3.75 1.85-1.81z"/>
-                            </svg>
-                            Editar
-                        </a>
+        @if(count($musics) > 0)
+            <div class="overflow-x-auto rounded-lg border border-indigo-300">
+                <table class="min-w-full divide-y divide-indigo-200">
+                    <thead class="bg-indigo-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-indigo-700 font-semibold tracking-wide">Nome da Música</th>
+                            <th class="px-6 py-3 text-left text-indigo-700 font-semibold tracking-wide">Artista</th>
+                            <th class="px-6 py-3 text-left text-indigo-700 font-semibold tracking-wide">Gravadora</th>
+                            <th class="px-6 py-3 text-center text-indigo-700 font-semibold tracking-wide">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-indigo-200">
+                        @foreach($musics as $music)
+                            <tr class="hover:bg-indigo-50 cursor-pointer">
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-800">{{ $music['nm_musica'] ?? '-' }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-800">{{ $music['artista'] ?? '-' }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-gray-800">{{ $music['gravadora'] ?? '-' }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center space-x-3">
+                                    <a href="{{ route('playlist.editar', $music['id']) }}" 
+                                       class="text-indigo-600 hover:text-indigo-900 flex items-center justify-center gap-1 font-semibold" title="Editar">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="action-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 11l6 6L4 20l1-7 4-2z" />
+                                        </svg>
+                                        Editar
+                                    </a>
 
-                        <form action="{{ route('playlist.destroy', $music) }}" method="POST" onsubmit="return confirm('Deseja realmente excluir esta música?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn-delete">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-                                </svg>
-                                Excluir
-                            </button>
-                        </form>
-                    </div>
-                </article>
-            @endforeach
-        </section>
-    </main>
-</x-app-layout>
+                                    <form action="{{ route('playlist.destroy', $music['id']) }}" method="POST" class="inline" onsubmit="return confirm('Confirmar exclusão?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" 
+                                                class="text-red-600 hover:text-red-900 flex items-center justify-center gap-1 font-semibold" title="Excluir">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="action-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4m-4 0a1 1 0 00-1 1v1h6V4a1 1 0 00-1-1m-4 0h4" />
+                                            </svg>
+                                            Excluir
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @else
+            <p class="text-indigo-100 text-center text-lg mt-10 select-none">Nenhuma música encontrada na playlist.</p>
+        @endif
+    </div>
+
+</body>
+</html>
